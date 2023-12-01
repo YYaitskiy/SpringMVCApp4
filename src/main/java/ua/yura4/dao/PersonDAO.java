@@ -43,24 +43,22 @@ public class PersonDAO {
         return people;
     }
 
-//    public Person show(int id){
-//        return people.stream().filter(person -> person.getId() == id).findAny().orElse(null);
-//    }
+    public Person show(int id){
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Person WHERE id=?");
+    }
 
     public void save(Person person){
-//        person.setId(++PEOPLE_COUNT);
-//        people.add(person);
-        Statement statement = null;
         try {
-            statement = connection.createStatement();
-            String SQL = "INSERT INTO Person VALUES(" + 1 + ",'" + person.getName() + "'," + person.getAge() + ",'"
-                    + person.getEmail() + "')";
-            statement.executeUpdate(SQL);
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Person VALUES(1,?,?,?) ");
+
+            preparedStatement.setString(1, person.getName());
+            preparedStatement.setInt(2, person.getAge());
+            preparedStatement.setString(3, person.getEmail());
+
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
 //    public void update (int id, Person updatedPerson){
